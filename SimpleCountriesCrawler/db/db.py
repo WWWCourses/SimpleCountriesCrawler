@@ -42,6 +42,7 @@ class DB:
             VALUES (%s, %s, %s, %s)
         """
 
+        # convert list of dictionaries into list of tuples needed for executemany:
         countries_data = [
             (country['name'], country['capital'], country['population'], country['area'])
             for country in countries_data

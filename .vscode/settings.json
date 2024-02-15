@@ -1,13 +1,13 @@
 {
 	"spellright.language": [
-		"Bulgarian",
 		"English (American)"
 	],
 	"spellright.documentTypes": [
 		"markdown",
 		"latex",
 		"plaintext",
-		"html"
+		"html",
+		"python"
 	],
 	"editor.fontSize": 20,
 	"todo-tree.tree.showBadges": false,
