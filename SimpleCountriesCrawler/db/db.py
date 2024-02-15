@@ -1,4 +1,11 @@
+from re import L
 import mysql.connector
+
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
+
 
 class DB:
     def __init__(self) -> None:
@@ -40,7 +47,18 @@ class DB:
             VALUES (%s, %s, %s, %s)
         """
 
+        # convert list of dictionaries into list of tupples, as executemany dit not works with list of dicstionaries
+        countries_data = [
+            (country['name'], country['capital'],country['population'],country['area'] )
+            for country in countries_data
+        ]
+
         cursor.executemany(insert_query, countries_data)
+
+        # commit the transaction:
+        self.db.commit()
+
+        cursor.close()
 
 if __name__=="__main__":
     db = DB()
@@ -61,3 +79,5 @@ if __name__=="__main__":
     ]
 
     db.insert_countries_data(data)
+
+    logger.debug(f'Successfully insrted: {data}')
