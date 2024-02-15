@@ -1,5 +1,6 @@
 import requests
 from scraper import Scraper
+from db.db import DB
 
 import logging
 
@@ -50,6 +51,9 @@ if __name__=="__main__":
     # scraper.get_bulgaria_area()
     countries_data = scraper.get_countries_data()
     print(countries_data)
+
+    db = DB()
+    db.insert_countries_data(countries_data)
 
 
 
