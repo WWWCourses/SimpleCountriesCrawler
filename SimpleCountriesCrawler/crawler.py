@@ -1,4 +1,6 @@
 import requests
+from scraper import Scraper
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -32,7 +34,7 @@ class Crawler:
             return response.text
 
         except requests.exceptions.RequestException as e:
-            logger.error(f"Failed to retrieve HTML from {url}: {e}")
+            logger.error(f"Failed to retrieve HTML from {self.target_url}: {e}")
             raise  # re-raise the exception to be handled by the caller
 
 
@@ -43,6 +45,13 @@ if __name__=="__main__":
     crawler = Crawler(target_url)
     html = crawler.get_html()
     crawler.save_to_file(html=html)
+
+    scraper = Scraper(html)
+    # scraper.get_bulgaria_area()
+    countries_data = scraper.get_countries_data()
+    print(countries_data)
+
+
 
 
 
