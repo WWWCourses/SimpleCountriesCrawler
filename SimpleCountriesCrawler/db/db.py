@@ -1,15 +1,11 @@
-from re import L
 import mysql.connector
-
 import logging
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-
 class DB:
     def __init__(self) -> None:
-        # Establish a connection to the MySQL server
         self.db = mysql.connector.connect(
             host="localhost",
             user="test",
@@ -18,12 +14,10 @@ class DB:
         )
 
     def create_countries_table(self):
-        # Create a cursor object to interact with the database
         cursor = self.db.cursor()
 
-        # SQL query to create a 'students' table
         create_table_query = """
-        CREATE TABLE countries (
+        CREATE TABLE IF NOT EXISTS countries (
           id INT AUTO_INCREMENT PRIMARY KEY,
           name VARCHAR(50),
           capital VARCHAR(50),
@@ -32,52 +26,53 @@ class DB:
         )
         """
 
-
-
-        # Execute the query to create the table
-        cursor.execute(create_table_query)
+        try:
+            cursor.execute(create_table_query)
+            self.db.commit()
+        except mysql.connector.Error as err:
+            logger.error(f"Error creating table: {err}")
+        finally:
+            cursor.close()
 
     def insert_countries_data(self, countries_data):
-        # Create a cursor object to interact with the database
         cursor = self.db.cursor()
 
-        # SQL query to insert data into the 'students' table
         insert_query = """
             INSERT INTO countries (name, capital, population, area)
             VALUES (%s, %s, %s, %s)
         """
 
-        # convert list of dictionaries into list of tupples, as executemany dit not works with list of dicstionaries
         countries_data = [
-            (country['name'], country['capital'],country['population'],country['area'] )
+            (country['name'], country['capital'], country['population'], country['area'])
             for country in countries_data
         ]
 
-        cursor.executemany(insert_query, countries_data)
+        try:
+            cursor.executemany(insert_query, countries_data)
+            self.db.commit()
+            logger.debug(f"Successfully inserted: {len(countries_data)} rows.")
+        except mysql.connector.Error as err:
+            logger.error(f"Error inserting data: {err}")
+        finally:
+            cursor.close()
 
-        # commit the transaction:
-        self.db.commit()
-
-        cursor.close()
-
-if __name__=="__main__":
+if __name__ == "__main__":
     db = DB()
     # db.create_countries_table()
+
     data = [
         {
-            'name':" country_name1",
-            'capital':"country_capital1",
-            'population':"country_population1",
-            'area':"country_area1",
+            'name': "country_name1",
+            'capital': "country_capital1",
+            'population': "country_population1",
+            'area': "country_area1",
         },
         {
-            'name':" country_name1",
-            'capital':"country_capital1",
-            'population':"country_population1",
-            'area':"country_area1",
+            'name': "country_name2",
+            'capital': "country_capital2",
+            'population': "country_population2",
+            'area': "country_area2",
         }
     ]
 
     db.insert_countries_data(data)
-
-    logger.debug(f'Successfully insrted: {data}')
