@@ -1,4 +1,9 @@
 {
+	"files.exclude": {
+		"**/__pycache__": true
+	},
+	"editor.fontSize": 20,
+
 	"spellright.language": [
 		"English (American)"
 	],
@@ -6,13 +11,17 @@
 		"markdown",
 		"latex",
 		"plaintext",
-		"html",
-		"python"
+		"html"
 	],
-	"editor.fontSize": 20,
-	"todo-tree.tree.showBadges": false,
+	"spellright.ignoreFiles": [
+		"**/.gitignore",
+		"**/.*pyi"
+	],
+
 	"python.analysis.autoImportCompletions": true,
-	"python.interpreterPath": ".venv/bin/python",
+
+	"todo-tree.tree.showBadges": false,
+
 	"pyqt-integration.pylupdate.cmd": "pylupdate6",
 	"pyqt-integration.pyrcc.cmd": "pyrcc6",
 	"pyqt-integration.pyuic.cmd": "pyuic6",
