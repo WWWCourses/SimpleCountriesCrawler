@@ -43,7 +43,7 @@ class TableView(qtw.QTableView):
 
     def initialize_model(self):
         self.data = self.db.select_all_data()
-        logger.debug('model data loaded: %s', self.data[:10])
+        logger.debug('model data loaded: %s', self.data[:10])   # type:ignore
         self.column_names = self.db.get_column_names()
 
         model = self.setup_model()
@@ -59,28 +59,29 @@ class TableView(qtw.QTableView):
         model = qtg.QStandardItemModel()
         model.setHorizontalHeaderLabels(self.column_names)
 
-        for i, row in enumerate(self.data):
-            ### if we do not care of item types, but just want to stringify them:
-            items = [qtg.QStandardItem(str(item)) for item in row]
-            logger.debug('ROW: %s', row)
+        if self.data:
+            for i, row in enumerate(self.data):
+                ### if we do not care of item types, but just want to stringify them:
+                items = [qtg.QStandardItem(str(item)) for item in row]
+                logger.debug('ROW: %s', row)
 
-            ### handle diffrent item types
-            # items = []
-            # for field in row:
-            #     item = qtg.QStandardItem()
-            #     if isinstance(field, datetime.date):
-            #         field = field.strftime('%d.%m.%Y')
-            #     elif isinstance(field, str) and len(field)>100:
-            #         # set full string with UserRole for later use:
-            #         item.setData(field, qtc.Qt.ItemDataRole.UserRole)
-            #         # trim string for display
-            #         field = field[0:50]+'...'
+                ### handle diffrent item types
+                # items = []
+                # for field in row:
+                #     item = qtg.QStandardItem()
+                #     if isinstance(field, datetime.date):
+                #         field = field.strftime('%d.%m.%Y')
+                #     elif isinstance(field, str) and len(field)>100:
+                #         # set full string with UserRole for later use:
+                #         item.setData(field, qtc.Qt.ItemDataRole.UserRole)
+                #         # trim string for display
+                #         field = field[0:50]+'...'
 
 
-            #     item.setData(field, qtc.Qt.ItemDataRole.DisplayRole)
-            #     items.append(item)
+                #     item.setData(field, qtc.Qt.ItemDataRole.DisplayRole)
+                #     items.append(item)
 
-            model.insertRow(i, items)
+                model.insertRow(i, items)
 
         return model
 
@@ -92,7 +93,7 @@ class TableView(qtw.QTableView):
         self.resizeColumnToContents(1)
         # self.setColumnWidth(3, 300)
 
-        self.verticalHeader().setSectionResizeMode(qtw.QHeaderView.ResizeMode.ResizeToContents);
+        self.verticalHeader().setSectionResizeMode(qtw.QHeaderView.ResizeMode.ResizeToContents); #type:ignore
 
         # enable columns sort
         self.setSortingEnabled(True)
@@ -114,7 +115,7 @@ class TableView(qtw.QTableView):
             last_updated_date = None
 
         if last_updated_date is not None:
-            return last_updated_date.strftime('%d.%m.%y, %H:%M:%S')
+            return last_updated_date.strftime('%d.%m.%y, %H:%M:%S')     #type:ignore
         else:
             return datetime.datetime.now().strftime('%d.%m.%y, %H:%M:%S')
 

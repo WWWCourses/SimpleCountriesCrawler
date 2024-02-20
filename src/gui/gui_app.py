@@ -22,7 +22,7 @@ class MainWindow(qtw.QMainWindow):
         target_url = data_processing_config['target_url']
 
         self.data_processor = DataProcessor(target_url = target_url)
-
+        self.data_table = None
         self.setupUI()
 
         # Connect signals:
