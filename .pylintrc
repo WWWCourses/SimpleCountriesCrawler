@@ -1,0 +1,3 @@
+[MASTER]
+ignore = ./src/gui/gui_app
+ignore = ./src/gui/data_table
